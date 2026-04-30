@@ -12,3 +12,7 @@ export const BOT = {
 	ID: process.env.CLIENT_ID!,
 	DEBUG_ON: process.env.DEBUG_GUILD_ID!,
 } as const;
+
+export const CONFIG_CATEGORY = {
+	ROLE: 'CFG-R',
+}

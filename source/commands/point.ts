@@ -1,20 +1,21 @@
 // --- ポイント管理用コマンド ---
 
+import { CONFIG_CATEGORY } from '../core/data';
+
 import {
     SlashCommandBuilder,
     ChatInputCommandInteraction,
-    MessageFlags
+    MessageFlags,
+    GuildMember,
 } from 'discord.js';
 import {
     operatePoints,
     getPoints
 } from '../db/userpoints';
 import { APPSTAT } from '../core/data';
-import {
-    setRoleId,
-    hasRoleKey
-} from '../utils/roleConfig';
+import { GuildConfigManager as GCM } from '../utils/configManager';
 
+const roleKey = 'PT-MNGR'
 export default {
     data: new SlashCommandBuilder()
         .setName('point')
@@ -22,7 +23,7 @@ export default {
         .addSubcommand(sub => 
             sub
                 .setName('init')
-                .setDescription('ポイントシステム初期化(データに影響なし)')
+                .setDescription('ポイント管理者のロールを作成しBot内で有効化します。')
         )
         .addSubcommand(sub =>
             sub
@@ -85,12 +86,15 @@ export default {
         if (!interaction.guild) {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
         }
+        if (!interaction.member) {
+            return interaction.reply({ content: '該当サーバーのメンバーである必要があります。', flags: MessageFlags.Ephemeral });
+        }
 
         const sub = interaction.options.getSubcommand();
 
         if (sub === 'init') {
-            const roleKey = 'PT-MNGR'
-            if (hasRoleKey(interaction.guild.id, roleKey) === true) {
+            const isExists = await GCM.exists(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey)
+            if (isExists === true) {
                 await interaction.reply({
                     content: 'すでに設定されています。',
                     flags: MessageFlags.Ephemeral
@@ -102,8 +106,8 @@ export default {
                 reason: 'ポイント機能管理者用のロールの作成'
             })
             
-            setRoleId(interaction.guild.id, roleKey, pointManager.id)
-
+            await GCM.set(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey, pointManager.id);
+            
             await interaction.reply({
                 content: 'ポイント管理者のロールを作成しました。',
                 flags: MessageFlags.Ephemeral
@@ -121,6 +125,9 @@ export default {
 
         let action:string = ''
         // ポイント操作の実装
+        const member = interaction.member as GuildMember;
+        const hasRole = member.roles.cache.has(await GCM.get(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey))
+        if (!hasRole && !member.permissions.has('Administrator')) return interaction.reply({ content: '権限がありません。', flags: MessageFlags.Ephemeral })
         switch (sub) {
             case 'add':
                 operatePoints(target.id, interaction.guild.id, amount, 'add');

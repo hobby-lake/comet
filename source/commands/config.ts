@@ -16,7 +16,6 @@ import {
     Guild,
     GuildMember
 } from 'discord.js';
-import { loadConfig } from '../utils/roleConfig';
 import { error } from 'console';
 
 export default {
@@ -74,9 +73,9 @@ export default {
         let role:Role | APIRole | null;
         let target:User | null;
         let member:GuildMember | null;
+        
         switch(sub) {
             case 'init':
-                loadConfig(interaction.guild.id);
                 await interaction.reply({
                     content: '設定ファイルの初期設定が完了しました。',
                     flags: MessageFlags.Ephemeral

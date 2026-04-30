@@ -1,5 +1,7 @@
 // --- ロール編集 ---
 
+import { CONFIG_CATEGORY } from '../core/data';
+
 import {
     SlashCommandBuilder,
     PermissionFlagsBits,
@@ -8,13 +10,13 @@ import {
     Role,
     APIRole,
 } from 'discord.js';
-import { setRoleId } from '../utils/roleConfig';
 import { error } from 'node:console';
+import { GuildConfigManager as GCM } from '../utils/configManager';
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('動作確認用')
+        .setName('role')
+        .setDescription('Bot内部におけるロールの扱いを設定します。')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand(sub =>
             sub
@@ -56,21 +58,26 @@ export default {
                     throw error;
                 }
 
-                setRoleId(interaction.guild.id, tag, role.id)
+                await GCM.set(interaction.guild.id, CONFIG_CATEGORY.ROLE, tag, role.id);
 
                 interaction.reply({
                     content: `${role}を${tag}として認識します。`,
                     flags:MessageFlags.Ephemeral
-                })
+                });
                 return;
             case 'taglist':
-
-
+                const taglist = await GCM.list(interaction.guild.id, CONFIG_CATEGORY.ROLE);
             
+                let rep:string = '有効なタグ一覧\n';
+
+                taglist.forEach(tag => {
+                    rep += `- ${tag}\n`
+                });
+
                 interaction.reply({
-                    content: ``,
+                    content: rep,
                     flags:MessageFlags.Ephemeral
-                })
+                });
                 return;
             default:
                 return;
