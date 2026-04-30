@@ -60,11 +60,11 @@ export default {
 
                 await GCM.set(interaction.guild.id, CONFIG_CATEGORY.ROLE, tag, role.id);
 
-                interaction.reply({
+                return await interaction.reply({
                     content: `${role}を${tag}として認識します。`,
                     flags:MessageFlags.Ephemeral
                 });
-                return;
+
             case 'taglist':
                 const taglist = await GCM.list(interaction.guild.id, CONFIG_CATEGORY.ROLE);
             
@@ -74,11 +74,11 @@ export default {
                     rep += `- ${tag}\n`
                 });
 
-                interaction.reply({
+                return await interaction.reply({
                     content: rep,
                     flags:MessageFlags.Ephemeral
                 });
-                return;
+
             default:
                 return;
         }

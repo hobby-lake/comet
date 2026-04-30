@@ -95,7 +95,7 @@ export default {
         if (sub === 'init') {
             const isExists = await GCM.exists(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey)
             if (isExists === true) {
-                await interaction.reply({
+                return await interaction.reply({
                     content: 'すでに設定されています。',
                     flags: MessageFlags.Ephemeral
                 });
@@ -108,16 +108,14 @@ export default {
             
             await GCM.set(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey, pointManager.id);
             
-            await interaction.reply({
+            return await interaction.reply({
                 content: 'ポイント管理者のロールを作成しました。',
                 flags: MessageFlags.Ephemeral
             });
-            return;
         }
 
         if (sub === 'check') {
-            await interaction.reply(`${interaction.user.displayName}さんのポイント残高は${getPoints(interaction.user.id, interaction.guild.id)}です。`);
-            return;
+            return await interaction.reply(`${interaction.user.displayName}さんのポイント残高は${getPoints(interaction.user.id, interaction.guild.id)}です。`);
         }
 
         const target = interaction.options.getUser('target', true);
@@ -147,6 +145,6 @@ export default {
 
         if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`${interaction.user.displayName} >> point of ${target.displayName} >> ${sub} >> ${amount}`);
 
-        await interaction.reply(`${target.displayName}のポイントを${amount}${action}ました。`);
+        return await interaction.reply(`${target.displayName}のポイントを${amount}${action}ました。`);
     }
 };

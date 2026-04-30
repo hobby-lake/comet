@@ -36,6 +36,6 @@ export default {
             console.log(`[INF]:`,`- ${g.name} (${g.id})`);
         });
 
-        await interaction.followUp('グローバルコマンドを更新しました！');
+        return await interaction.followUp('グローバルコマンドを更新しました！');
     }
 };

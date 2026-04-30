@@ -64,6 +64,6 @@ export default {
         });
 
         await interaction.showModal(modal);
-        return interaction.reply({ content: '募集を開始します。', flags: MessageFlags.Ephemeral });
+        //return interaction.reply({ content: '募集を開始します。', flags: MessageFlags.Ephemeral });
     }
 };

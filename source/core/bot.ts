@@ -8,7 +8,8 @@ import {
   GatewayIntentBits,
   REST,
   Collection,
-  MessageFlags
+  MessageFlags,
+  TextChannel
 } from 'discord.js';
 import fs from 'fs'
 import path from 'path'
@@ -78,7 +79,7 @@ export function launch(){
         const command = client.commands.get(interaction.commandName);
 
         if (!command) {
-            return interaction.reply({
+            return await interaction.reply({
                 content: 'このコマンドは存在しません。',
                 flags: MessageFlags.Ephemeral
             });
@@ -88,10 +89,12 @@ export function launch(){
             await command.execute(interaction);
         } catch (err) {
             console.error('[ERR]:','Command Interaction Exception:',err);
-            await interaction.reply({
-                content: 'コマンド実行中にエラーが発生しました。',
-                flags: MessageFlags.Ephemeral
-            });
+            if (interaction.channel) {
+                const channel = interaction.channel as TextChannel;
+                await channel.send({
+                    content: 'コマンド実行中にエラーが発生しました。'
+                });
+            }
         }
 
         console.log(`[LOG]:`,`${interaction.user.displayName} >>> ${interaction.commandName}`)
