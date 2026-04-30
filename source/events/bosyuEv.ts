@@ -70,10 +70,6 @@ export default {
 
             // 返信など
             if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Recruit will be started`);
-            await interaction.reply({
-                content: '募集を開始します!',
-                flags: MessageFlags.Ephemeral
-            })
 
             const channel = interaction.channel as TextChannel;
 
