@@ -2,14 +2,16 @@
 
 import { db } from './index';
 
-export function getPoints(userId: string, guildId: string): number | undefined {
+export function getPoints(userId: string, guildId: string): number {
     const stmt = db.prepare(`
         SELECT value FROM user_points
         WHERE userId = ? AND guildId = ?
     `);
 
     const row = stmt.get(userId, guildId) as { value: number } | undefined;
-    return row?.value;
+    if (row === undefined)
+        return 0
+    else return row.value;
 }
 
 export function setPoints(userId: string, guildId: string, value: number) {
