@@ -1,0 +1,10 @@
+node_modules/
+b-debug/
+.testlib/
+.vscode/
+config/
+
+*.env
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

@@ -1,0 +1,26 @@
+{
+  "name": "comet",
+  "version": "1.0.0",
+  "description": "Community assistant for stellamare",
+  "main": "main.js",
+  "scripts": {
+    "test": "node b-debug/test/wip.js",
+    "bot": "node b-debug/main.js",
+    "compile": "npx tsc --noEmitOnError",
+    "cmd-dp": "node b-debug/scripts/deploy-commands.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "discord.js": "^14.26.3",
+    "dotenv": "^17.4.2",
+    "typescript": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.6.0"
+  }
+}
