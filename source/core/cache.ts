@@ -1,0 +1,1 @@
+export const bosyuCache = new Map<string, {targetRole: string;}>();

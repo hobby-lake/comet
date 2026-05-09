@@ -9,17 +9,31 @@ import {
     MessageFlags,
     ActionRowBuilder
 } from 'discord.js';
+import { bosyuCache } from '../core/cache';
 
 export default {
     data: new SlashCommandBuilder()
         .setName('bosyu')
-        .setDescription('ゲーム募集をします。送信後、案内に従ってください。'),
+        .setDescription('ゲーム募集をします。送信後、案内に従ってください。')
+        .addRoleOption(option =>
+            option
+                .setName('targetRole')
+                .setDescription('募集対象のロールを選択してください。')
+                .setRequired(true)
+        ),
 
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
         }
 
+        // オプション情報の保存
+        const targetRole = interaction.options.getRole('targetrole');
+        bosyuCache.set(interaction.user.id, {
+            targetRole: targetRole!.id
+        });
+
+        // モーダルの組み立て
         const headCount = new TextInputBuilder({
             customId: 'headCount',
             label: '募集人数',

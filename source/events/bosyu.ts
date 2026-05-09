@@ -15,6 +15,7 @@ import { fullToHalf } from '../utils/editString';
 import { 
     isIn
 } from '../utils/groupManager';
+import { bosyuCache } from '../core/cache';
 
 export default {
     name: Events.InteractionCreate,
@@ -22,6 +23,17 @@ export default {
         if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Detected interaction by ${interaction.user.displayName}`)
         if (interaction.isModalSubmit() && interaction.customId === 'Invitation') {
             if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Modal was submit`);
+
+            const cached = bosyuCache.get(interaction.user.id);
+            if (!cached) {
+                return interaction.reply({
+                    content: "募集対象ロール情報が見つかりませんでした。",
+                    ephemeral: true
+                });
+            }
+
+            const targetRoleId = cached.targetRole;
+            
             // Modal入力情報
             const headCount = interaction.fields.getTextInputValue('headCount');
             const gameMode = interaction.fields.getTextInputValue('gameMode');
@@ -32,7 +44,7 @@ export default {
 
             // 埋め込み構築
             const invitationEmbed = new EmbedBuilder({
-                title: `${interaction.user.displayName}が${gameMode}の募集をしています`,
+                title: `${interaction.user.displayName}が <@&${targetRoleId}> の募集をしています`,
                 description: `@everyone `,
                 fields: [
                     { name: '👥 募集人数──────────────────────', value: `${headCount}名`, inline:false},
@@ -77,7 +89,8 @@ export default {
                 embeds: [invitationEmbed],
                 components: [buttons],
                 allowedMentions: {
-                    parse: ['everyone', 'users']
+                    parse: ['everyone', 'users', 'roles'],
+                    roles: [targetRoleId]
                 }
             });
             if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Modal action was finished`);
@@ -184,10 +197,7 @@ export default {
 
             await msg.edit({
                 embeds: [embed],
-                components: msg.components,
-                allowedMentions: {
-                    parse: ['everyone']
-                }
+                components: msg.components
             });
         }
     }
