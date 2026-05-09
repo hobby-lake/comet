@@ -89,12 +89,6 @@ export function launch(){
             await command.execute(interaction);
         } catch (err) {
             console.error('[ERR]:','Command Interaction Exception:',err);
-            if (interaction.channel) {
-                const channel = interaction.channel as TextChannel;
-                await channel.send({
-                    content: 'コマンド実行中にエラーが発生しました。'
-                });
-            }
         }
 
         console.log(`[LOG]:`,`${interaction.user.displayName} >>> ${interaction.commandName}`)

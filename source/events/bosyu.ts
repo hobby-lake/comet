@@ -44,8 +44,7 @@ export default {
 
             // 埋め込み構築
             const invitationEmbed = new EmbedBuilder({
-                title: `${interaction.user.displayName}が <@&${targetRoleId}> の募集をしています`,
-                description: `@everyone `,
+                title: `${interaction.user.displayName}が ${gameMode} の募集をしています`,
                 fields: [
                     { name: '👥 募集人数──────────────────────', value: `${headCount}名`, inline:false},
                     { name: '📝 詳細情報──────────────────────', value: `${details}`, inline:false},
@@ -89,6 +88,10 @@ export default {
                 flags: MessageFlags.Ephemeral
             })
 
+            await channel.send({
+                content: `<@&${targetRoleId}> ${interaction.user.displayName}が ${gameMode} の募集をしています`,
+                allowedMentions: { roles: [targetRoleId] }
+            });
             await channel.send({
                 embeds: [invitationEmbed],
                 components: [buttons],
