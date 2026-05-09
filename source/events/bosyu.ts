@@ -89,7 +89,6 @@ export default {
                 embeds: [invitationEmbed],
                 components: [buttons],
                 allowedMentions: {
-                    parse: ['everyone', 'users', 'roles'],
                     roles: [targetRoleId]
                 }
             });
