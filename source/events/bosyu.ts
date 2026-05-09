@@ -84,6 +84,10 @@ export default {
             if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Recruit will be started`);
 
             const channel = interaction.channel as TextChannel;
+            await interaction.reply({
+                content: '募集を開始します!',
+                flags: MessageFlags.Ephemeral
+            })
 
             await channel.send({
                 embeds: [invitationEmbed],
@@ -93,10 +97,7 @@ export default {
                 }
             });
             if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Modal action was finished`);
-            return await interaction.reply({
-                content: '募集を開始します!',
-                flags: MessageFlags.Ephemeral
-            })
+            return;
         }
 
         // 募集埋め込み用アクションボタン
