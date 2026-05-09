@@ -12,12 +12,12 @@ import {
 } from 'discord.js';
 import { error } from 'node:console';
 import { GuildConfigManager as GCM } from '../utils/configManager';
+import { crit_check } from '../core/permission';
 
 export default {
     data: new SlashCommandBuilder()
         .setName('role')
         .setDescription('Bot内部におけるロールの扱いを設定します。')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand(sub =>
             sub
                 .setName('register')
@@ -42,6 +42,10 @@ export default {
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
+        }
+
+        if (crit_check(interaction) == false) {
+            return interaction.reply({ content: '権限を持っていません。', flags: MessageFlags.Ephemeral })
         }
 
         const sub = interaction.options.getSubcommand();

@@ -1,6 +1,7 @@
 // Data handler >>> Must be dmain
 
 import dotenv from 'dotenv';
+import { read } from 'node:fs';
 dotenv.config();
 
 export const APPSTAT = {
@@ -16,3 +17,11 @@ export const BOT = {
 export const CONFIG_CATEGORY = {
 	ROLE: 'CFG-R',
 }
+
+let tempMaintainerId:string[];
+if (process.env.MAINTAINER_ID !== null && process.env.MAINTAINER_ID !== undefined) {
+	tempMaintainerId = process.env.MAINTAINER_ID.split(',');
+} else {
+	tempMaintainerId = ['NOBODYHERE'];
+}
+export const MAINTAINER_IDS:string[] = tempMaintainerId;

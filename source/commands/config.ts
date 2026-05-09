@@ -17,12 +17,12 @@ import {
     GuildMember
 } from 'discord.js';
 import { error } from 'console';
+import { crit_check } from '../core/permission';
 
 export default {
     data: new SlashCommandBuilder()
         .setName('config')
         .setDescription('サーバー設定をBotに記録する。')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand(sub =>
             sub
                 .setName('init')
@@ -66,6 +66,10 @@ export default {
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
+        }
+
+        if (crit_check(interaction) == false) {
+            return interaction.reply({ content: '権限を持っていません。', flags: MessageFlags.Ephemeral })
         }
 
         const sub = interaction.options.getSubcommand();

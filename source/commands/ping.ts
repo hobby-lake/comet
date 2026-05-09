@@ -16,7 +16,7 @@ export default {
         if (!interaction.guild) {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
         }
-
+        
         await interaction.reply('ぽんっ！');
     }
 };

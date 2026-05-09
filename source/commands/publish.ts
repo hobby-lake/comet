@@ -9,6 +9,7 @@ import {
 } from 'discord.js';
 import { publishGlobalCommands } from '../utils/publishCommands';
 import 'dotenv/config';
+import { isDev } from '../core/permission';
 
 export default {
     data: new SlashCommandBuilder()
@@ -23,6 +24,10 @@ export default {
 
         if (interaction.guild.id !== process.env.DEBUG_GUILD_ID) {
             return interaction.reply({ content: 'このコマンドは先行公開サーバーでのみ使用できます。', flags: MessageFlags.Ephemeral });
+        }
+
+        if (isDev(interaction) == false) {
+            return interaction.reply({ content: 'あなたはメンテナーとして登録されていません。', flags: MessageFlags.Ephemeral });
         }
 
         await interaction.reply('グローバルコマンドを更新しています...');

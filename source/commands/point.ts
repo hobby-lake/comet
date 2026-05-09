@@ -14,6 +14,7 @@ import {
 } from '../db/userpoints';
 import { APPSTAT } from '../core/data';
 import { GuildConfigManager as GCM } from '../utils/configManager';
+import { crit_check } from '../core/permission';
 
 const roleKey = 'PT-MNGR'
 export default {
@@ -88,6 +89,9 @@ export default {
         }
         if (!interaction.member) {
             return interaction.reply({ content: '該当サーバーのメンバーである必要があります。', flags: MessageFlags.Ephemeral });
+        }
+        if (crit_check(interaction) == false) {
+            return interaction.reply({ content: '権限を持っていません。', flags: MessageFlags.Ephemeral })
         }
 
         const sub = interaction.options.getSubcommand();

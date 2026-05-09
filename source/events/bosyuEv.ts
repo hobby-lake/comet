@@ -33,7 +33,7 @@ export default {
             // 埋め込み構築
             const invitationEmbed = new EmbedBuilder({
                 title: `${interaction.user.displayName}が${gameMode}の募集をしています`,
-                description: `@here`,
+                description: `@everyone `,
                 fields: [
                     { name: '👥 募集人数──────────────────────', value: `${headCount}名`, inline:false},
                     { name: '📝 詳細情報──────────────────────', value: `${details}`, inline:false},
@@ -184,7 +184,10 @@ export default {
 
             await msg.edit({
                 embeds: [embed],
-                components: msg.components
+                components: msg.components,
+                allowedMentions: {
+                    parse: ['everyone']
+                }
             });
         }
     }
