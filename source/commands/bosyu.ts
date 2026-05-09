@@ -17,7 +17,7 @@ export default {
         .setDescription('ゲーム募集をします。送信後、案内に従ってください。')
         .addRoleOption(option =>
             option
-                .setName('targetRole')
+                .setName('target_role')
                 .setDescription('募集対象のロールを選択してください。')
                 .setRequired(true)
         ),
@@ -28,7 +28,7 @@ export default {
         }
 
         // オプション情報の保存
-        const targetRole = interaction.options.getRole('targetrole');
+        const targetRole = interaction.options.getRole('target_role');
         bosyuCache.set(interaction.user.id, {
             targetRole: targetRole!.id
         });
