@@ -1,7 +1,6 @@
 // Data handler >>> Must be dmain
 
 import dotenv from 'dotenv';
-import { read } from 'node:fs';
 dotenv.config();
 
 export const APPSTAT = {

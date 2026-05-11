@@ -4,12 +4,12 @@
 import { BOT } from './data';
 import { publishGlobalCommands } from '../utils/publishCommands';
 import {
-  Client,
-  GatewayIntentBits,
-  REST,
-  Collection,
-  MessageFlags,
-  TextChannel
+    Client,
+    GatewayIntentBits,
+    REST,
+    Collection,
+    MessageFlags,
+    TextChannel
 } from 'discord.js';
 import fs from 'fs'
 import path from 'path'
@@ -31,12 +31,12 @@ const commandsPath = path.join(__dirname, '../../b-debug/commands');
 const commandFiles = fs.readdirSync(commandsPath);
 
 for (const file of commandFiles) {
-  if (!file.endsWith('.js')) continue;
+    if (!file.endsWith('.js')) continue;
 
-  const command = require(path.join(commandsPath, file)).default;
+    const command = require(path.join(commandsPath, file)).default;
 
-  // command.data.name を鍵として登録
-  client.commands.set(command.data.name, command);
+    // command.data.name を鍵として登録
+    client.commands.set(command.data.name, command);
 }
 
 // --- イベントの適用

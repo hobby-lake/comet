@@ -4,7 +4,6 @@ import { CONFIG_CATEGORY } from '../core/data';
 
 import {
     SlashCommandBuilder,
-    PermissionFlagsBits,
     ChatInputCommandInteraction,
     MessageFlags,
     Role,

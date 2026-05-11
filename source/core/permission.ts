@@ -1,6 +1,7 @@
 // --- 権限制限 ---
 
-import { MAINTAINER_IDS } from "./data";
+import { MAINTAINER_IDS, CONFIG_CATEGORY } from "./data";
+import { GuildConfigManager as GCM} from "../utils/configManager"
 import { 
     ChatInputCommandInteraction,
     GuildMember
@@ -15,6 +16,19 @@ import {
 // === メンバー権限 ===
 export function isMember(interaction:ChatInputCommandInteraction):boolean {
     if (interaction.member != null) return true;
+    return false;
+}
+
+// === 部分付与権限 ===
+
+export const roleKey_ptMngr = 'PT-MNGR';
+export async function isPointManager(interaction:ChatInputCommandInteraction): Promise<boolean> {
+    if (interaction.member != null && interaction.guild != null) {
+        const member = interaction.member as GuildMember;
+        const roleId = await GCM.get(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey_ptMngr) as string;
+        if (member.roles.cache.has(roleId)) return true;
+    }
+
     return false;
 }
 

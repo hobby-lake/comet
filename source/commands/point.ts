@@ -14,9 +14,8 @@ import {
 } from '../db/userpoints';
 import { APPSTAT } from '../core/data';
 import { GuildConfigManager as GCM } from '../utils/configManager';
-import { crit_check } from '../core/permission';
+import { crit_check, roleKey_ptMngr, isPointManager } from '../core/permission';
 
-const roleKey = 'PT-MNGR'
 export default {
     data: new SlashCommandBuilder()
         .setName('point')
@@ -90,14 +89,14 @@ export default {
         if (!interaction.member) {
             return interaction.reply({ content: '該当サーバーのメンバーである必要があります。', flags: MessageFlags.Ephemeral });
         }
-        if (crit_check(interaction) == false) {
+        if (crit_check(interaction) == false && await isPointManager(interaction) == false) {
             return interaction.reply({ content: '権限を持っていません。', flags: MessageFlags.Ephemeral })
         }
 
         const sub = interaction.options.getSubcommand();
 
         if (sub === 'init') {
-            const isExists = await GCM.exists(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey)
+            const isExists = await GCM.exists(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey_ptMngr)
             if (isExists === true) {
                 return await interaction.reply({
                     content: 'すでに設定されています。',
@@ -110,7 +109,7 @@ export default {
                 reason: 'ポイント機能管理者用のロールの作成'
             })
             
-            await GCM.set(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey, pointManager.id);
+            await GCM.set(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey_ptMngr, pointManager.id);
             
             return await interaction.reply({
                 content: 'ポイント管理者のロールを作成しました。',
@@ -128,7 +127,7 @@ export default {
         let action:string = ''
         // ポイント操作の実装
         const member = interaction.member as GuildMember;
-        const hasRole = member.roles.cache.has(await GCM.get(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey))
+        const hasRole = member.roles.cache.has(await GCM.get(interaction.guild.id, CONFIG_CATEGORY.ROLE, roleKey_ptMngr))
         if (!hasRole && !member.permissions.has('Administrator')) return interaction.reply({ content: '権限がありません。', flags: MessageFlags.Ephemeral })
         switch (sub) {
             case 'add':
