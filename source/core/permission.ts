@@ -20,7 +20,9 @@ export function isMember(interaction:ChatInputCommandInteraction):boolean {
 }
 
 // === 部分付与権限 ===
-
+/** >>> 要修正
+ * ロール情報の保存を型・データとして整理する
+ */
 export const roleKey_ptMngr = 'PT-MNGR';
 export async function isPointManager(interaction:ChatInputCommandInteraction): Promise<boolean> {
     if (interaction.member != null && interaction.guild != null) {
@@ -31,6 +33,8 @@ export async function isPointManager(interaction:ChatInputCommandInteraction): P
 
     return false;
 }
+
+export const division_key_support = 'CommunitySupport';
 
 // === 重要権限 ===
 export function isDev(interaction:ChatInputCommandInteraction):boolean {
@@ -46,7 +50,7 @@ function isAdmin(interaction:ChatInputCommandInteraction):boolean {
     return false;
 }
 
-export function crit_check(interaction:ChatInputCommandInteraction):boolean {
+export function critical_check(interaction:ChatInputCommandInteraction):boolean {
     if (isDev(interaction) || isAdmin(interaction)) return true;
     return false;
 }

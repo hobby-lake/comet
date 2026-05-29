@@ -1,6 +1,6 @@
 // --- 募集コマンド専用イベントハンドラ ---
 
-import { APPSTAT } from '../core/data';
+import { APPSTAT, MODAL_ID } from '../core/data';
 import { 
     EmbedBuilder,
     Events, 
@@ -20,9 +20,8 @@ import { bosyuCache } from '../core/cache';
 export default {
     name: Events.InteractionCreate,
     async execute(interaction: Interaction) {
-        if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Detected interaction by ${interaction.user.displayName}`)
-        if (interaction.isModalSubmit() && interaction.customId === 'Invitation') {
-            if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Modal was submit`);
+        if (interaction.isModalSubmit() && interaction.customId === MODAL_ID.INVITATION) {
+            if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Received modal from ${interaction.user.displayName}`);
 
             const cached = bosyuCache.get(interaction.user.id);
             if (!cached) {

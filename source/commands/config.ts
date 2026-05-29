@@ -17,7 +17,7 @@ import {
     GuildMember
 } from 'discord.js';
 import { error } from 'console';
-import { crit_check } from '../core/permission';
+import { critical_check } from '../core/permission';
 
 export default {
     data: new SlashCommandBuilder()
@@ -68,7 +68,7 @@ export default {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
         }
 
-        if (crit_check(interaction) == false) {
+        if (critical_check(interaction) == false) {
             return interaction.reply({ content: '権限を持っていません。', flags: MessageFlags.Ephemeral })
         }
 

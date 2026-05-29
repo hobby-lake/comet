@@ -1,4 +1,3 @@
-// src/utils/loadCommands.ts
 import path from 'path';
 import { readdirSync } from 'fs';
 

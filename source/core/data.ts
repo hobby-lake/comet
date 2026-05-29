@@ -14,7 +14,9 @@ export const BOT = {
 } as const;
 
 export const CONFIG_CATEGORY = {
-	ROLE: 'CFG-R',
+	ROLE: 'Roles',
+	CATEGORY: 'Categories',
+	CHANNEL: 'Channels'
 }
 
 let tempMaintainerId:string[];
@@ -24,3 +26,8 @@ if (process.env.MAINTAINER_ID !== null && process.env.MAINTAINER_ID !== undefine
 	tempMaintainerId = ['NOBODYHERE'];
 }
 export const MAINTAINER_IDS:string[] = tempMaintainerId;
+
+export const MODAL_ID = {
+	INVITATION: 'Invitation',
+	REPORT: 'UserReport',
+}

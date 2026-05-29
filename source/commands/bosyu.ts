@@ -10,6 +10,7 @@ import {
     ActionRowBuilder
 } from 'discord.js';
 import { bosyuCache } from '../core/cache';
+import { APPSTAT, MODAL_ID } from '../core/data';
 
 export default {
     data: new SlashCommandBuilder()
@@ -23,6 +24,7 @@ export default {
         ),
 
     async execute(interaction: ChatInputCommandInteraction) {
+        if (APPSTAT.MODE === 'DEBUG') console.log(`[LOG]:`,`Detected interaction by ${interaction.user.displayName}`);
         if (!interaction.guild) {
             return interaction.reply({ content: 'サーバー内でのみ使用できます。', flags: MessageFlags.Ephemeral });
         }
@@ -67,7 +69,7 @@ export default {
         });
 
         const modal = new ModalBuilder({
-            customId: 'Invitation',
+            customId: MODAL_ID.INVITATION,
             title: '募集',
             components: [
                 new ActionRowBuilder<TextInputBuilder>({ components: [headCount] }),
