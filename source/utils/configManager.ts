@@ -38,7 +38,7 @@ export class GuildConfigManager {
         });
     }
 
-    // === 実装 ===
+    // === 外部公開関数 ===
     static async load(guildId: string, category: string): Promise<any> {
         const file = this.getFilePath(guildId, category);
 
